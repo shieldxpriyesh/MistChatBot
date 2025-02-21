@@ -24,8 +24,7 @@ sec_key = os.getenv("HF_TOKEN")
 # Define model parameters
 
 llm = HuggingFaceEndpoint(
-    repo_id = "mistralai/Mistral-7B-Instruct-v0.3"
-    repo_id=repo_id,
+    repo_id="mistralai/Mistral-7B-Instruct-v0.3"
     temperature=0.5,
     model_kwargs={"max_length": 200},
     huggingfacehub_api_token=sec_key
