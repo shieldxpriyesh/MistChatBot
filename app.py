@@ -10,6 +10,8 @@ import streamlit as st
 
 # Streamlit UI Configurations
 st.set_page_config(page_title="Mistral-7B ChatBot 🤖", page_icon="🤖", initial_sidebar_state="collapsed")
+
+# Hide Streamlit's default UI elements
 st.markdown("""
     <style>
     footer {visibility: hidden;}
@@ -32,7 +34,7 @@ llm = HuggingFaceEndpoint(
 # Memory to store chat history
 memory = ConversationBufferMemory(memory_key="chat_history")
 
-#Prompt for chain-of-thought reasoning
+# Define prompt for chain-of-thought reasoning
 template = """You are a conversational AI assistant that responds in a friendly and helpful manner. 
 You think step-by-step before answering. Keep responses engaging and relevant to the conversation.
 
@@ -44,14 +46,14 @@ AI:"""
 
 prompt = PromptTemplate(template=template, input_variables=["chat_history", "question"])
 
-# LangChain conversation chain
+# Create the LangChain conversation chain
 chain = LLMChain(llm=llm, prompt=prompt, memory=memory)
 
 # Streamlit UI
 st.title("Mistral-7B ChatBot 🤖")
 st.write("Chat with an AI that remembers and thinks step-by-step!")
 
-# Initialize Chat history in Streamlit session state
+#  chat history in Streamlit session state
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
@@ -63,15 +65,25 @@ for message in st.session_state["messages"]:
 # User input
 user_input = st.chat_input("Say something...")
 if user_input:
-    # user input to chat history
+    # Add user input to chat history
     st.session_state["messages"].append({"role": "user", "content": user_input})
     
-    # Get AI response
-    response = chain.run(question=user_input)
+    # Displays user input immediately
+    with st.chat_message("user"):
+        st.markdown(user_input)
     
+    # Placeholder for AI response
+    response_placeholder = st.empty()
+
+    # Get AI response with streaming
+    response = ""
+    for chunk in chain.run(question=user_input):
+        response += chunk
+        response_placeholder.markdown(response)
+
     # Add AI response to chat history
     st.session_state["messages"].append({"role": "assistant", "content": response})
-    
-    # Display AI response
+
+    # Display AI response in chat format
     with st.chat_message("assistant"):
         st.markdown(response)
