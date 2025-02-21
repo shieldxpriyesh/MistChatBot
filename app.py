@@ -6,9 +6,18 @@ from langchain.prompts import PromptTemplate
 import os
 import streamlit as st
 #from google.colab import userdata
+st.set_page_config(page_title="Mistral-7B QAbot 🤖", page_icon="🤖", initial_sidebar_state="collapsed")
+
+hide_st_style = """
+            <style>
+            footer {visibility: hidden;}
+            #MainMenu {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 sec_key = os.getenv("HF_TOKEN")
-
 
 # Define model parameters
 repo_id = "mistralai/Mistral-7B-Instruct-v0.3"
