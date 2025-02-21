@@ -33,8 +33,8 @@ llm = HuggingFaceEndpoint(
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 # **Updated Prompt Template**
-template = """You are an AI assistant. Respond to the user's query based only on their input. 
-Do not generate user questions yourself. 
+template =  """You are an AI assistant. Answer only based on actual user inputs.
+Do not generate extra questions or repeat past messages.
 
 Conversation history:
 {chat_history}
@@ -76,7 +76,7 @@ if user_input:
     response = chain.run(question=user_input)
 
     # Ensure AI does not generate fake user messages
-    response = response.replace("User:", "").strip()
+    response = response.replace("Hello! How can I assist you today?", "").strip()
 
     # Display AI response
     response_placeholder.markdown(response)
