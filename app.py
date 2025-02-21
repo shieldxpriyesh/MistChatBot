@@ -32,7 +32,7 @@ llm = HuggingFaceEndpoint(
 )
 
 # Memory to store chat history
-memory = ConversationBufferMemory(memory_key="chat_history")
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 # Define prompt for chain-of-thought reasoning
 template = """You are a conversational AI assistant that responds in a friendly and helpful manner. 
@@ -75,15 +75,16 @@ if user_input:
     # Placeholder for AI response
     response_placeholder = st.empty()
 
-    # Get AI response with streaming
-    response = ""
-    for chunk in chain.run(question=user_input):
-        response += chunk
-        response_placeholder.markdown(response)
-
+    response = chain.run(question=user_input)
+    
+    # Ensure AI does not generate fake user messages
+    response = response.replace("User:", "").strip()
+    
+    # Display AI response
+    response_placeholder.markdown(response)
+    
     # Add AI response to chat history
     st.session_state["messages"].append({"role": "assistant", "content": response})
-
-    # Display AI response in chat format
+    
     with st.chat_message("assistant"):
-        st.markdown(response)
+            st.markdown(response)
