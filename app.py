@@ -82,7 +82,7 @@ if user_input:
     ]
 
    for phrase in unwanted_phrases:
-        response = response.replace(phrase, "").strip()
+       response = response.replace(phrase, "").strip()
 
     # Display AI response
     response_placeholder.markdown(response)
