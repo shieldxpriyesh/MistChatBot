@@ -74,9 +74,15 @@ if user_input:
 
     # Get AI response
     response = chain.run(question=user_input)
+    # **Filter out hallucinated content**
+    unwanted_phrases = [
+        "User:",  # Removes hallucinated user messages
+        "AI:",  # Ensures AI doesn't self-identify mid-response
+        "Hello! How can I assist you today?"  # Prevent repeated greetings
+    ]
 
-    # Ensure AI does not generate fake user messages
-    response = response.replace("Hello! How can I assist you today?", "").strip()
+   for phrase in unwanted_phrases:
+        response = response.replace(phrase, "").strip()
 
     # Display AI response
     response_placeholder.markdown(response)
