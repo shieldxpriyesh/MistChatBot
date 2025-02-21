@@ -81,7 +81,7 @@ if user_input:
         "Hello! How can I assist you today?"  # Prevent repeated greetings
     ]
 
-   for phrase in unwanted_phrases:
+    for phrase in unwanted_phrases:
        response = response.replace(phrase, "").strip()
 
     # Display AI response
