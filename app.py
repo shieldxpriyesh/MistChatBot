@@ -20,7 +20,7 @@ llm = HuggingFaceEndpoint(
 )
 
 # Streamlit UI
-st.title("Mistral-7B Chatbot 🤖")
+st.title("Mistral-7B QAbot 🤖")
 st.write("Ask a question and get an AI-generated response.")
 
 user_input = st.text_input("Enter your question:")
